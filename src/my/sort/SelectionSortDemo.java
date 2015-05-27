@@ -1,3 +1,4 @@
+package my.sort;
 
 public class SelectionSortDemo {
 	
