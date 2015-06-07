@@ -4,58 +4,100 @@ public class MergeSort {
 
 	public static int[] mergeSort(int arrayNum[]) {
 		
+		int leftArray[] = null;
+		
+		int rightArray[] = null;
+		
 		int len = arrayNum.length;
-		int left, right;
-		if (len > 1) {
-			if ((len % 2) != 0) {
-				left = (len / 2) + 1;
-				right = len - left;
-			} else {
-				left = len / 2;
-				right = len - left;
-			}
+		
+		int mode = len % 2;
+		
+		int num = len / 2;
+		
+		if (mode != 0 && len != 1) {
 			
-			int leftArray [] = new int[left];
-			int rightArray [] = new int[right];
-			for (int i=0; i<left; i++) {
+			leftArray = new int[num+1];
+			for (int i=0; i<leftArray.length; i++) {
 				leftArray[i] = arrayNum[i];
 			}
 			
-			for (int j=0; j<right; j++) {
-				rightArray[j] = arrayNum[left];
+			rightArray = new int[num];
+			for (int i=num+1,j=0; i<len; i++,j++) {
+				rightArray[j] = arrayNum[i];
 			}
 			
-			mergeSort(leftArray);
+			leftArray = mergeSort(leftArray);
 			
-			mergeSort(rightArray);
+			rightArray = mergeSort(rightArray);
 			
-			merge(leftArray, rightArray);
 			
-		} else {
+			
+		} else if (mode == 0) {
+			
+			leftArray = new int[num];
+			for (int i=0; i<leftArray.length; i++) {
+				leftArray[i] = arrayNum[i];
+			}
+			
+			rightArray = new int[num];
+			for (int i=num,j=0; i<len; i++,j++) {
+				rightArray[j] = arrayNum[i];
+			}
+			
+			leftArray = mergeSort(leftArray);
+			
+			rightArray = mergeSort(rightArray);
+			
+			
+		} else if (len == 1) {
 			return arrayNum;
 		}
+		
+		arrayNum = merge(leftArray, rightArray);
 		
 		return arrayNum;
 		
 	}
 	
-	public static int[] merge (int leftArray[], int rightArray[]) {
-		int len = leftArray.length + rightArray.length;
-		int temp[] = new int[len];
-		for (int i=0; i<rightArray.length; i++) {
-			for (int j=0; j<leftArray.length; j++) {
-				
-			}
+	public static int[] merge(int leftArray[], int rightArray[]) {
+	
+		int tempArray[] = new int[leftArray.length + rightArray.length];
+		
+		for (int i=0; i<leftArray.length; i++) {
+			tempArray[i] = leftArray[i];
+		}
+		
+		for (int j=0, k = leftArray.length; j<rightArray.length; j++, k++) {
+			tempArray[k] = rightArray[j];
 		}
 		
 		
-		return null;
+		int temp = 0;
+		for (int k=leftArray.length; k<tempArray.length; k++) {
+			
+			for (int i=0; i<k; i++) {
+				if (tempArray[k] < tempArray[i]) {
+					temp = tempArray[i];
+					tempArray[i] = tempArray[k];
+					tempArray[k] = temp;
+				}
+			}
+			
+			
+		}
+		
+		return tempArray;
 	}
 	
 	public static void main(String[] args) {
 		
-		int arrayNum[] = {38, 27, 43};
-		mergeSort(arrayNum);
+		int arrayNum[] = {3, 7, 1, 12, 9};
+		int sortArray[] = mergeSort(arrayNum);
+		
+		for (int num: sortArray) {
+			System.out.print(num + ", ");
+		}
+		
 
 	}
 
