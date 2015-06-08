@@ -2,6 +2,11 @@ package my.sort;
 
 public class MergeSort {
 
+	private int[] array;
+	private int[] tempMergArr;
+	private int length;
+	
+	/**
 	public static int[] mergeSort(int arrayNum[]) {
 		
 		int leftArray[] = null;
@@ -88,14 +93,73 @@ public class MergeSort {
 		
 		return tempArray;
 	}
+	*/
+	
+	public void sort(int inputArr[]) {
+		this.array = inputArr;
+		this.length = inputArr.length;
+		this.tempMergArr = new int[length];
+		doMergeSort(0, length - 1);
+	}
+
+	private void doMergeSort(int lowerIndex, int higherIndex) {
+
+		if (lowerIndex < higherIndex) {
+			int middle = lowerIndex + (higherIndex - lowerIndex) / 2;
+			// Below step sorts the left side of the array
+			doMergeSort(lowerIndex, middle);
+			// Below step sorts the right side of the array
+			doMergeSort(middle + 1, higherIndex);
+			// Now merge both sides
+			mergeParts(lowerIndex, middle, higherIndex);
+		}
+	}
+
+	private void mergeParts(int lowerIndex, int middle, int higherIndex) {
+
+		for (int i = lowerIndex; i <= higherIndex; i++) {
+			tempMergArr[i] = array[i];
+		}
+		int i = lowerIndex;
+		int j = middle + 1;
+		int k = lowerIndex;
+		while (i <= middle && j <= higherIndex) {
+			if (tempMergArr[i] <= tempMergArr[j]) {
+				array[k] = tempMergArr[i];
+				i++;
+			} else {
+				array[k] = tempMergArr[j];
+				j++;
+			}
+			k++;
+		}
+		while (i <= middle) {
+			array[k] = tempMergArr[i];
+			k++;
+			i++;
+		}
+
+	}
 	
 	public static void main(String[] args) {
 		
+		
+		
+		/**
 		int arrayNum[] = {3, 7, 1, 12, 9};
 		int sortArray[] = mergeSort(arrayNum);
 		
 		for (int num: sortArray) {
 			System.out.print(num + ", ");
+		}
+		*/
+		
+		int[] inputArr = { 32, 27, 43, 3, 9, 82, 10 };
+		MergeSort mms = new MergeSort();
+		mms.sort(inputArr);
+		for (int i : inputArr) {
+			System.out.print(i);
+			System.out.print(" ");
 		}
 		
 
